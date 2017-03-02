@@ -1,0 +1,6 @@
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.exe.config
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.exe
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.pdb
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.csprojResolveAssemblyReference.cache
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.exe
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.pdb

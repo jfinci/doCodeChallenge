@@ -1,0 +1,8 @@
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\bin\Debug\DealerOnJordanFinciTests.dll
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\bin\Debug\DealerOnJordanFinciTests.pdb
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\bin\Debug\DealerOnJordanFinci.exe
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\bin\Debug\DealerOnJordanFinci.pdb
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\obj\Debug\DealerOnJordanFinciTests.csprojResolveAssemblyReference.cache
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\obj\Debug\DealerOnJordanFinciTests.dll
+c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinciTests\obj\Debug\DealerOnJordanFinciTests.pdb

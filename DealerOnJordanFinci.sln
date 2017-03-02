@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DealerOnJordanFinci", "DealerOnJordanFinci\DealerOnJordanFinci.csproj", "{F5E2F710-9437-4D40-9985-057B997372FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DealerOnJordanFinciTests", "DealerOnJordanFinciTests\DealerOnJordanFinciTests.csproj", "{7CE90479-6B3F-4C3C-9EC2-CBEC40338B37}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5E2F710-9437-4D40-9985-057B997372FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E2F710-9437-4D40-9985-057B997372FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E2F710-9437-4D40-9985-057B997372FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E2F710-9437-4D40-9985-057B997372FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE90479-6B3F-4C3C-9EC2-CBEC40338B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE90479-6B3F-4C3C-9EC2-CBEC40338B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE90479-6B3F-4C3C-9EC2-CBEC40338B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE90479-6B3F-4C3C-9EC2-CBEC40338B37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
