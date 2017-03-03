@@ -4,3 +4,9 @@ c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinc
 c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.csprojResolveAssemblyReference.cache
 c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.exe
 c:\dealerOn\DealerOnJordanFinci\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.pdb
+C:\DealerOn\dealeron\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.exe.config
+C:\DealerOn\dealeron\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.exe
+C:\DealerOn\dealeron\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.pdb
+C:\DealerOn\dealeron\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.exe
+C:\DealerOn\dealeron\DealerOnJordanFinci\bin\Debug\DealerOnJordanFinci.pdb
+C:\DealerOn\dealeron\DealerOnJordanFinci\obj\Debug\DealerOnJordanFinci.csprojResolveAssemblyReference.cache

@@ -10,15 +10,18 @@ namespace DealerOnJordanFinci
     {
         #region Properties
 
-        private Dictionary<char, City> cities;
+        private Dictionary<char, TrainStop> Cities;
 
         #endregion
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of Map;
+        /// </summary>
         public Map()
         {
-            this.cities = new Dictionary<char, City>();
+            this.Cities = new Dictionary<char, TrainStop>();
         }
 
         #endregion
@@ -34,7 +37,7 @@ namespace DealerOnJordanFinci
         /// <param name="distance"></param>
         public void AddRoute(char startName, char endName, int distance)
         {
-            this.addCity(startName).routes.Add(this.addCity(endName), distance);
+            this.AddCity(startName).Routes.Add(this.AddCity(endName), distance);
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace DealerOnJordanFinci
         public int FindDirectDistance(LinkedList<char> route)
         {
             LinkedList<char> routeCopy;
-            City startCity;
+            TrainStop startCity;
 
             if (route.Count() < 2)
             {
@@ -55,15 +58,15 @@ namespace DealerOnJordanFinci
             }
 
             routeCopy = new LinkedList<char>(route);
-            startCity = this.cities[route.First.Value];
+            startCity = this.Cities[route.First.Value];
             route.RemoveFirst();
 
             return FindDistance(startCity, route);
         }
 
-        private int FindDistance(City startCity, LinkedList<char> route, int distance = 0)
+        private int FindDistance(TrainStop startCity, LinkedList<char> route, int distance = 0)
         {
-            City nextCity;
+            TrainStop nextCity;
             int nextCityDistance;
 
             if (route.Count() == 0)
@@ -72,12 +75,12 @@ namespace DealerOnJordanFinci
             }
             else
             {
-                if (!this.cities.TryGetValue(route.First.Value, out nextCity))
+                if (!this.Cities.TryGetValue(route.First.Value, out nextCity))
                 {
                     throw new ArgumentOutOfRangeException();
                 }
                 
-                if (!startCity.routes.TryGetValue(nextCity, out nextCityDistance))
+                if (!startCity.Routes.TryGetValue(nextCity, out nextCityDistance))
                 {
                     throw new ArgumentOutOfRangeException();
                 }
@@ -89,9 +92,9 @@ namespace DealerOnJordanFinci
             }
         }
 
-        public bool HasCity(char cityName)
+        public bool HasStop(char cityName)
         {
-            return this.cities.ContainsKey(cityName);
+            return this.Cities.ContainsKey(cityName);
         }
 
         /// <summary>
@@ -104,30 +107,28 @@ namespace DealerOnJordanFinci
         /// <returns></returns>
         public int NumTripsWithMaxNStops(int nStops, char startCity, char endCity)
         {
-            City currentCity;
+            TrainStop currentCity;
 
-            currentCity = this.cities[startCity];
+            currentCity = this.Cities[startCity];
 
             return this.FindNumTripsWithMaxNStops(0, nStops, 0, currentCity, endCity);
         }
 
-        private int FindNumTripsWithMaxNStops(int stops, int maxStops, int count, City currentCity, char endCity)
+        private int FindNumTripsWithMaxNStops(int stops, int maxStops, int count, TrainStop currentCity, char endCity)
         {
-            Dictionary<City, int> adjacentCities;
-            adjacentCities = currentCity.routes;
+            Dictionary<TrainStop, int> adjacentCities;
+            adjacentCities = currentCity.Routes;
 
             if (stops <= maxStops)
             {
-                foreach (City city in adjacentCities.Keys)
+                foreach (TrainStop stop in adjacentCities.Keys)
                 {
-                    if (city.name == endCity)
+                    if (stop.Name == endCity)
                     {
                         count++;
                     }
-                    else
-                    {
-                        count = this.FindNumTripsWithMaxNStops(++stops, maxStops, count, city, endCity);
-                    }
+
+                    count = this.FindNumTripsWithMaxNStops(stops+1, maxStops, count, stop, endCity);
                 }
             }
 
@@ -142,30 +143,34 @@ namespace DealerOnJordanFinci
         /// <param name="startCity"></param>
         /// <param name="endCity"></param>
         /// <returns></returns>
-        public int numTripsWithExactlyNStops(int nStops, char startCity, char endCity)
+        public int NumTripsWithExactlyNStops(int nStops, char startCity, char endCity)
         {
-            City currentCity;
-            currentCity = this.cities[startCity];
+            TrainStop currentCity;
 
-            return this.FindNumTripsWithMaxNStops(0, nStops, 0, currentCity, endCity);
+            if (!this.Cities.TryGetValue(startCity, out currentCity))
+            {
+                throw new ArgumentOutOfRangeException("startCity");
+            }
+
+            return this.findNumTripsWithExactlyNStops(0, nStops, 0, currentCity, endCity);
         }
 
-        private int findNumTripsWithExactlyNStops(int stops, int nStops, int count, City currentCity, char endCity)
+        private int findNumTripsWithExactlyNStops(int stops, int nStops, int count, TrainStop currentCity, char endCity)
         {
-            Dictionary<City, int> adjacentCities;
-            adjacentCities = currentCity.routes;
+            Dictionary<TrainStop, int> adjacentCities;
+            adjacentCities = currentCity.Routes;
 
             if (stops <= nStops)
             {
-                foreach (City city in adjacentCities.Keys)
+                foreach (TrainStop nextStop in adjacentCities.Keys)
                 {
-                    if (nStops == stops && city.name == endCity)
+                    if (nStops == stops && nextStop.Name == endCity)
                     {
                         count++;
                     }
                     else
                     {
-                        count = this.findNumTripsWithExactlyNStops(++stops, nStops, count, city, endCity);
+                        count = this.findNumTripsWithExactlyNStops(stops+1, nStops, count, nextStop, endCity);
                     }
                 }
             }
@@ -180,10 +185,136 @@ namespace DealerOnJordanFinci
         /// <param name="distance"></param>
         /// <param name="startCity"></param>
         /// <param name="endCity"></param>
-        /// <returns></returns>
-        public int numTripsWithDistanceLessThan(int distance, char startCity, char endCity)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the start city does not exist
+        /// on the map.</exception>
+        public int NumTripsWithDistanceLessThanN(int distance, char startCity, char endCity)
         {
-            throw new NotImplementedException();
+            TrainStop currentCity;
+
+            if (!this.Cities.TryGetValue(startCity, out currentCity))
+            {
+                throw new ArgumentOutOfRangeException("startCity");
+            }
+
+            return this.FindNumTripsWithDistanceLessThanN(distance, 0, 0, currentCity, endCity);
+        }
+
+        private int FindNumTripsWithDistanceLessThanN(int maxDistance, int currentDistance, int count, TrainStop currentCity, char endCity)
+        {
+            Dictionary<TrainStop, int> adjacentCities;
+            adjacentCities = currentCity.Routes;
+            
+            foreach (TrainStop nextStop in adjacentCities.Keys)
+            {
+                int nextDistance;
+                
+                nextDistance = currentDistance + adjacentCities[nextStop];
+                if (nextDistance < maxDistance)
+                {
+                    if (nextStop.Name == endCity)
+                    {
+                        count++;
+                    }
+
+                    count = this.FindNumTripsWithDistanceLessThanN(maxDistance, nextDistance, count, nextStop, endCity);
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Finds the shortest route between stops.  
+        /// 
+        /// This is just a basic implementation of Dijkstra's, referenced:
+        /// https://en.wikipedia.org/wiki/Dijkstra's_algorithm
+        /// </summary>
+        /// <param name="stopA"></param>
+        /// <param name="stopB"></param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when 
+        /// <paramref name="stopA"/> does not exist in the Map.</exception>
+        public int ShortestRoute(char stopA, char stopB)
+        {
+            Dictionary<char, int> distances;
+            Dictionary<char, TrainStop> previous;
+            List<char> stops;
+            TrainStop startCity;
+
+            if (!this.Cities.TryGetValue(stopA, out startCity))
+            {
+                throw new ArgumentOutOfRangeException("stopA");
+            }
+
+            distances = new Dictionary<char, int>();
+            previous = new Dictionary<char, TrainStop>();
+            stops = new List<char>();
+
+            foreach (char stop in this.Cities.Keys)
+            {
+                distances.Add(stop, int.MaxValue);
+                previous.Add(stop, null);
+                stops.Add(stop);
+            }
+
+            distances[stopA] = 0;
+
+            while (stops.Count() > 0)
+            {
+                char currStop;
+                int minDistance;
+
+                minDistance = int.MaxValue;
+                currStop = stopA; //Compiler?
+
+                //Find the node with the least distance first.
+                foreach (char stop in stops)
+                {
+                    if (minDistance > distances[stop])
+                    {
+                        minDistance = distances[stop];
+                        currStop = stop;
+                    }
+                }
+
+                if (currStop == stopB)
+                {
+                    return this.findShortestPathDistance(currStop, previous, distances);
+                }
+
+                stops.Remove(currStop);
+
+                foreach (TrainStop neighbor in this.Cities[currStop].Routes.Keys)
+                {
+                    int dist;
+
+                    dist = distances[currStop] + this.Cities[currStop].Routes[neighbor];
+                    if (dist < distances[neighbor.Name])
+                    {
+                        distances[neighbor.Name] = dist;
+                        previous[neighbor.Name] = this.Cities[currStop];
+                    }
+                }
+            }
+
+            throw new Exception("Not found.");
+        }
+
+        private int findShortestPathDistance(char lastStop, Dictionary<char, TrainStop> previous, Dictionary<char, int> distances)
+        {
+            char currStop;
+            LinkedList<char> pathFound;
+
+            currStop = lastStop;
+            pathFound = new LinkedList<char>();
+            while (previous[currStop] != null)
+            {
+                pathFound.AddFirst(currStop);
+                currStop = previous[currStop].Name;
+            }
+
+            pathFound.AddFirst(currStop);
+
+            return this.FindDirectDistance(pathFound);
         }
 
         #endregion
@@ -195,13 +326,13 @@ namespace DealerOnJordanFinci
         /// it does not already exist.
         /// </summary>
         /// <param name="cityName"></param>
-        private City addCity(char cityName)
+        private TrainStop AddCity(char cityName)
         {
-            City newCity;
-            if (!this.cities.TryGetValue(cityName, out newCity))
+            TrainStop newCity;
+            if (!this.Cities.TryGetValue(cityName, out newCity))
             {
-                newCity = new City(cityName);
-                this.cities.Add(cityName, newCity);
+                newCity = new TrainStop(cityName);
+                this.Cities.Add(cityName, newCity);
             }
             return newCity;
         }

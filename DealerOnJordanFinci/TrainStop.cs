@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace DealerOnJordanFinci
 {
-    public class City
+    public class TrainStop
     {
         #region properties
 
-        public char name;
+        public char Name;
 
-        public Dictionary<City, int> routes;
+        public Dictionary<TrainStop, int> Routes;
 
         #endregion
 
         #region constructor
 
-        public City(char name)
+        public TrainStop(char name)
         {
-            this.routes = new Dictionary<City, int>();
-            this.name = name;
+            this.Routes = new Dictionary<TrainStop, int>();
+            this.Name = name;
         }
 
         #endregion
@@ -32,9 +32,9 @@ namespace DealerOnJordanFinci
         {
             StringBuilder output = new StringBuilder();
             output.Append("City ");
-            output.Append(this.name);
+            output.Append(this.Name);
             output.Append(":\n");
-            output.Append(this.routes.ToString());
+            output.Append(this.Routes.ToString());
             output.Append("\n");
             return output.ToString();
         }

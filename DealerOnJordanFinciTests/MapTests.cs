@@ -12,98 +12,180 @@ namespace DealerOnJordanFinci.Tests
     public class MapTests
     {
         [TestMethod()]
-        public void addRouteTest()
+        public void AddRouteTest()
         {
-            char startCity, endCity;
+            char startstop, endstop;
             Map map;
 
-            startCity = 'A';
-            endCity = 'B';
+            startstop = 'A';
+            endstop = 'B';
             map = new Map();
 
-            map.AddRoute(startCity, endCity, 5);
+            map.AddRoute(startstop, endstop, 5);
 
-            Assert.IsTrue(map.HasCity(startCity) && map.HasCity(endCity));
+            Assert.IsTrue(map.HasStop(startstop) && map.HasStop(endstop));
         }
 
         [TestMethod()]
-        public void findDirectDistanceTest()
+        public void FindDirectDistanceTest()
         {
-            char cityA, cityB, cityC, cityD;
+            char stopA, stopB, stopC, stopD;
             Map map;
             LinkedList<char> route;
 
-            cityA = 'A';
-            cityB = 'B';
-            cityC = 'C';
-            cityD = 'D';
+            stopA = 'A';
+            stopB = 'B';
+            stopC = 'C';
+            stopD = 'D';
 
-            route = new LinkedList<char>(new char[] { cityA, cityB, cityC, cityD });
+            route = new LinkedList<char>(new char[] { stopA, stopB, stopC, stopD });
 
             map = new Map();
 
-            map.AddRoute(cityA, cityB, 5);
-            route = new LinkedList<char> (new char[] { cityA, cityB });
+            map.AddRoute(stopA, stopB, 5);
+            route = new LinkedList<char> (new char[] { stopA, stopB });
             Assert.AreEqual(map.FindDirectDistance(route), 5);
 
-            map.AddRoute(cityB, cityC, 2);
-            route = new LinkedList<char>(new char[] { cityA, cityB, cityC });
+            map.AddRoute(stopB, stopC, 2);
+            route = new LinkedList<char>(new char[] { stopA, stopB, stopC });
             Assert.AreEqual(map.FindDirectDistance(route), 7);
 
-            map.AddRoute(cityC, cityD, 10);
-            route = new LinkedList<char>(new char[] { cityA, cityB, cityC, cityD });
+            map.AddRoute(stopC, stopD, 10);
+            route = new LinkedList<char>(new char[] { stopA, stopB, stopC, stopD });
             Assert.AreEqual(map.FindDirectDistance(route), 17);
         }
 
         [TestMethod()]
-        public void numTripsWithMaxNStopsTest()
+        public void NumTripsWithMaxNStopsTest()
         {
-            char cityA, cityB, cityC, cityD;
+            char stopA, stopB, stopC, stopD;
             Map map;
-            LinkedList<char> route;
 
-            cityA = 'A';
-            cityB = 'B';
-            cityC = 'C';
-            cityD = 'D';
-
-            route = new LinkedList<char>(new char[] { cityA, cityB, cityC, cityD });
+            stopA = 'A';
+            stopB = 'B';
+            stopC = 'C';
+            stopD = 'D';
 
             map = new Map();
 
-            map.AddRoute(cityA, cityB, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(1, cityA, cityB), 1);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(1, cityB, cityA), 0);
+            map.AddRoute(stopA, stopB, 5);
+            Assert.AreEqual(1, map.NumTripsWithMaxNStops(1, stopA, stopB));
 
-            map.AddRoute(cityB, cityC, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(1, cityA, cityC), 1);
+            map.AddRoute(stopB, stopC, 5);
+            Assert.AreEqual(1, map.NumTripsWithMaxNStops(1, stopA, stopC));
 
-            map.AddRoute(cityC, cityD, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(1, cityA, cityD), 0);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(2, cityA, cityD), 1);
+            map.AddRoute(stopC, stopD, 5);
+            Assert.AreEqual(0, map.NumTripsWithMaxNStops(1, stopA, stopD));
+            Assert.AreEqual(1, map.NumTripsWithMaxNStops(2, stopA, stopD));
 
-            map.AddRoute(cityA, cityD, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(1, cityA, cityD), 1);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(2, cityA, cityD), 2);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(10, cityA, cityD), 2);
+            map.AddRoute(stopA, stopD, 5);
+            Assert.AreEqual(1, map.NumTripsWithMaxNStops(1, stopA, stopD));
+            Assert.AreEqual(2, map.NumTripsWithMaxNStops(2, stopA, stopD));
+            Assert.AreEqual(2, map.NumTripsWithMaxNStops(10, stopA, stopD));
 
-            map.AddRoute(cityB, cityD, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(2, cityA, cityD), 3);
+            map.AddRoute(stopB, stopD, 5);
+            Assert.AreEqual(3, map.NumTripsWithMaxNStops(2, stopA, stopD));
 
-            map.AddRoute(cityC, cityB, 5);
-            Assert.AreEqual(map.NumTripsWithMaxNStops(4, cityA, cityD), 5);
+            map.AddRoute(stopC, stopB, 5);
+            Assert.AreEqual(5, map.NumTripsWithMaxNStops(4, stopA, stopD));
+
+            map = new Map();
+
+            map.AddRoute(stopA, stopB, 1);
+            map.AddRoute(stopB, stopC, 1);
+            map.AddRoute(stopC, stopA, 1);
+            Assert.AreEqual(2, map.NumTripsWithMaxNStops(3, stopA, stopB));
         }
 
-        //[TestMethod()]
-        //public void numTripsWithExactlyNStopsTest()
-        //{
-        //    Assert.Fail();
-        //}
+        [TestMethod()]
+        public void NumTripsWithExactlyNStopsTest()
+        {
+            char stopA, stopB, stopC, stopD, stopE;
+            Map map;
 
-        //[TestMethod()]
-        //public void numTripsWithDistanceLessThanTest()
-        //{
-        //    Assert.Fail();
-        //}
+            stopA = 'A';
+            stopB = 'B';
+            stopC = 'C';
+            stopD = 'D';
+            stopE = 'E';
+
+            map = new Map();
+
+            map.AddRoute(stopA, stopB, 5);
+            Assert.AreEqual(1, map.NumTripsWithExactlyNStops(0, stopA, stopB));
+            Assert.AreEqual(0, map.NumTripsWithExactlyNStops(1, stopA, stopB));
+
+            map.AddRoute(stopB, stopC, 5);
+            Assert.AreEqual(1, map.NumTripsWithExactlyNStops(1, stopA, stopC));
+            Assert.AreEqual(1, map.NumTripsWithExactlyNStops(0, stopB, stopC));
+            Assert.AreEqual(0, map.NumTripsWithExactlyNStops(2, stopA, stopC));
+
+            map.AddRoute(stopC, stopD, 5);
+            Assert.AreEqual(0, map.NumTripsWithExactlyNStops(1, stopA, stopD));
+            Assert.AreEqual(1, map.NumTripsWithExactlyNStops(2, stopA, stopD));
+            Assert.AreEqual(0, map.NumTripsWithExactlyNStops(3, stopA, stopD));
+
+            map = new Map();
+
+            map.AddRoute(stopA, stopB, 1);
+            map.AddRoute(stopB, stopD, 1);
+            map.AddRoute(stopA, stopC, 1);
+            map.AddRoute(stopC, stopD, 1);
+            map.AddRoute(stopA, stopE, 1);
+            map.AddRoute(stopC, stopE, 1);
+            map.AddRoute(stopD, stopE, 1);
+            map.AddRoute(stopE, stopD, 1);
+
+            Assert.AreEqual(3, map.NumTripsWithExactlyNStops(1, stopA, stopD));
+            Assert.AreEqual(1, map.NumTripsWithExactlyNStops(2, stopA, stopD));
+
+            map.AddRoute(stopE, stopB, 1);
+            Assert.AreEqual(2, map.NumTripsWithExactlyNStops(2, stopA, stopD));
+        }
+
+        [TestMethod()]
+        public void NumTripsWithDistanceLessThanTest()
+        {
+            char stopA, stopB, stopC, stopD, stopE;
+            Map map;
+
+            stopA = 'A';
+            stopB = 'B';
+            stopC = 'C';
+            stopD = 'D';
+            stopE = 'E';
+
+            map = new Map();
+
+            map.AddRoute(stopA, stopB, 5);
+            Assert.AreEqual(0, map.NumTripsWithDistanceLessThanN(5, stopA, stopB));
+            Assert.AreEqual(1, map.NumTripsWithDistanceLessThanN(6, stopA, stopB));
+
+            map.AddRoute(stopB, stopC, 1);
+            map.AddRoute(stopC, stopA, 1);
+            Assert.AreEqual(2, map.NumTripsWithDistanceLessThanN(13, stopA, stopB));
+        }
+
+        [TestMethod()]
+        public void shortestRoute()
+        {
+            char stopA, stopB, stopC, stopD, stopE;
+            Map map;
+
+            stopA = 'A';
+            stopB = 'B';
+            stopC = 'C';
+            stopD = 'D';
+            stopE = 'E';
+
+            map = new Map();
+
+            map.AddRoute(stopA, stopB, 5);
+            Assert.AreEqual(5, map.ShortestRoute(stopA, stopB));
+
+            map.AddRoute(stopA, stopC, 15);
+            map.AddRoute(stopB, stopC, 1);
+            Assert.AreEqual(6, map.ShortestRoute(stopA, stopC));
+        }
     }
 }
