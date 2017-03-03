@@ -68,7 +68,6 @@ namespace DealerOnJordanFinci
             sourceNode.AdjacentStops.Add(destinationNode, distance);
         }
 
-
         /// <summary>
         /// Adds the city with name <paramref name="cityName"/> to the map if 
         /// it does not already exist.
@@ -165,8 +164,6 @@ namespace DealerOnJordanFinci
 
             return this.FindNumTripsWithDistanceLessThanN(distance, 0, 0, currentCity, endCity);
         }
-
-
 
         /// <summary>
         /// Finds the shortest route between stops.  
@@ -284,9 +281,7 @@ namespace DealerOnJordanFinci
                 if (nextDistance < maxDistance)
                 {
                     if (nextStop.Name == endCity)
-                    {
                         count++;
-                    }
 
                     count = this.FindNumTripsWithDistanceLessThanN(maxDistance, nextDistance, count, nextStop, endCity);
                 }
