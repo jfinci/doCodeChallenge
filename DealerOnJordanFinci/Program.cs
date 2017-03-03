@@ -78,6 +78,7 @@ namespace DealerOnJordanFinci
                     commandMatch = regEngine.Match(input);
                     command = commandMatch.Value;
                     parameters = input.Replace(command + " ", "");
+
                     try
                     {
                         switch (command.ToLower())
