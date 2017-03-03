@@ -9,57 +9,198 @@ namespace DealerOnJordanFinci
 {
     public class Program
     {
+        #region Constants
+
+        private const string commandNotRecognized = "Command not recognized or in wrong format.  Enter 'help' to view a list of commands.";
+        private const string commandRegex = @"^(?<command>[A-Za-z]*)";
+        private const string directPathRegex = @"^([A-Z])*$";
+        private const string graphRegex = @"^((?<start>[A-Z]{1})(?<end>[A-Z]{1})(?<distance>\d+)(,\s)*)*((?<start>[A-Z]{1})(?<end>[A-Z]{1})(?<distance>\d+))$";
+        private const string help = @"
+            dp [PATH]                               -- Finds direct path.  EX: ABC will find the direct path throuh A, B then C.
+            maxstops [STOPS] [START] [END]          -- Finds the number of trips with less than or equal to [MAXSTOPS] stops
+            exactstops [STOPS] [START] [END]        -- Finds the number of trips with exactly [STOPS] stops.
+            shortest [START] [END]                  -- Finds the shortest path.
+            shorterthan [DISTANCE] [START] [END]    -- Finds the number of paths with a distance shorter than [DISTANCE].
+            help                                    -- Shows this help menu.
+            q                                       -- exits the application.
+        ";
+        private const string stopsAndDistanceRegex = @"^(?<stops>\d+)\s(?<start>[A-Z])\s(?<end>[A-Z])$";
         private const string noPath = "NO SUCH ROUTE";
-        private const string graphRegex = @"((?<start>[A-D]{1})(?<end>[A-D]{1})(?<distance>\d+)(,\s)*)";
+        private const string shortestRegex = @"^(?<start>[A-Z]*)\s(?<end>[A-Z]*)$";
+
+        #endregion
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to the Westworld Express!");
-            Console.WriteLine("Enter a graph to retrieve graph statistics or Q to quit.");
+            TrainNetwork map;
+            Match commandMatch;
+            Regex regEngine;
+            string command, input, parameters;
+            
+            map = new TrainNetwork();
+            regEngine = new Regex(graphRegex);
 
-            Regex regEngine = new Regex(graphRegex);
-
-            string input = Console.ReadLine();
-            while (input != "Q")
+            do
             {
-                Map map = new Map();
-                MatchCollection matches = regEngine.Matches(input);
-
-                foreach (Match match in matches)
-                {
-                    char startName, endName;
-                    int distance;
-
-                    startName = match.Groups["start"].Value[0];
-                    endName = match.Groups["end"].Value[0];
-                    distance = Convert.ToInt32(match.Groups["distance"].Value);
-
-                    map.AddRoute(startName, endName, distance);
-                }
-
-                //GenerateOutput(map);
-
+                Console.WriteLine("Enter a graph to begin.");
                 input = Console.ReadLine();
+                commandMatch = regEngine.Match(input);
+
+                if (!commandMatch.Success)
+                    Console.WriteLine(commandNotRecognized);
+            }
+            while (!commandMatch.Success);
+            
+            for (int i = 0; i < commandMatch.Groups["start"].Captures.Count; i++)
+            {
+                char startName, endName;
+                int distance;
+
+                startName = commandMatch.Groups["start"].Captures[i].Value[0];
+                endName = commandMatch.Groups["end"].Captures[i].Value[0];
+                distance = Convert.ToInt32(commandMatch.Groups["distance"].Captures[i].Value);
+
+                map.AddRoute(startName, endName, distance);
             }
 
-            Console.WriteLine("Thanks for riding!");
+            Console.WriteLine(help);
+            input = Console.ReadLine();
+
+            while (input != "Q")
+            {
+                if (input == "help")
+                {
+                    Console.WriteLine(help);
+                }
+                else
+                {
+                    regEngine = new Regex(commandRegex);
+                    commandMatch = regEngine.Match(input);
+                    command = commandMatch.Value;
+                    parameters = input.Replace(command + " ", "");
+                    try
+                    {
+                        switch (command.ToLower())
+                        {
+                            case "dp":
+                                commandMatch = MatchCommandRegex(regEngine, directPathRegex, parameters);
+                                FindDirectPath(new LinkedList<char>(commandMatch.Value.ToCharArray()), map);
+                                break;
+
+                            case "maxstops":
+                                commandMatch = MatchCommandRegex(regEngine, stopsAndDistanceRegex, parameters);
+                                FindMaxStops(Convert.ToInt32(commandMatch.Groups["stops"].Value), 
+                                    commandMatch.Groups["start"].Value, commandMatch.Groups["end"].Value, map);
+                                break;
+
+                            case "exactstops":
+                                commandMatch = MatchCommandRegex(regEngine, stopsAndDistanceRegex, parameters);
+                                FindExactStops(Convert.ToInt32(commandMatch.Groups["stops"].Value),
+                                    commandMatch.Groups["start"].Value, commandMatch.Groups["end"].Value, map);
+                                break;
+
+                            case "shortest":
+                                commandMatch = MatchCommandRegex(regEngine, shortestRegex, parameters);
+                                FindShortestPath(commandMatch.Groups["start"].Value, commandMatch.Groups["end"].Value, map);
+                                break;
+
+                            case "shorterthan":
+                                commandMatch = MatchCommandRegex(regEngine, stopsAndDistanceRegex, parameters);
+                                FindPathShorterThan(Convert.ToInt32(commandMatch.Groups["stops"].Value),
+                                    commandMatch.Groups["start"].Value, commandMatch.Groups["end"].Value, map);
+                                break;
+
+                            default:
+                                Console.WriteLine(commandNotRecognized);
+                                break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine(commandNotRecognized);
+                    }
+                }
+                
+                input = Console.ReadLine();
+            }
         }
 
-        //public static void GenerateOutput(Map map)
-        //{
-        //    Console.WriteLine("Not implemented");
-        //}
+        #region Methods and Helpers
 
-        private string findDirectDistance(Map map, LinkedList<char> route)
+        private static Match MatchCommandRegex(Regex regEngine, string regex, string parameters)
+        {
+            Match commandMatch;
+
+            regEngine = new Regex(regex);
+            commandMatch = regEngine.Match(parameters);
+
+            if (!commandMatch.Success)
+                throw new Exception();
+
+            return commandMatch;
+        }
+
+        private static void FindPathShorterThan(int distance, string start, string end, TrainNetwork map)
         {
             try
             {
-                return map.FindDirectDistance(route).ToString();
+                Console.WriteLine(map.NumTripsWithDistanceLessThanN(distance, start[0], end[0]));
             }
-            catch (ArgumentOutOfRangeException)
+            catch (Exception e)
             {
-                return noPath;
+                Console.WriteLine(e.Message);
             }
         }
+
+        private static void FindShortestPath(string start, string end, TrainNetwork map)
+        {
+            try
+            {
+                Console.WriteLine(map.ShortestRoute(start[0], end[0]));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(noPath);
+            }
+        }
+
+        private static void FindExactStops(int stops, string start, string end, TrainNetwork map)
+        {
+            try
+            {
+                Console.WriteLine(map.NumTripsWithExactlyNStops(stops, start[0], end[0]));
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void FindMaxStops(int stops, string start, string end, TrainNetwork map)
+        {
+            try
+            {
+                Console.WriteLine(map.NumTripsWithMaxNStops(stops, start[0], end[0]));
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void FindDirectPath(LinkedList<char> list, TrainNetwork map)
+        {
+            try
+            {
+                Console.WriteLine(map.FindDirectDistance(list));
+            }
+            catch (PathNotFound)
+            {
+                Console.WriteLine(noPath);
+            }
+        }
+
+        #endregion
+
     }
 }

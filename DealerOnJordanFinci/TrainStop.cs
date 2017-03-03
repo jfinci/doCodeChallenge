@@ -12,7 +12,7 @@ namespace DealerOnJordanFinci
 
         public char Name;
 
-        public Dictionary<TrainStop, int> Routes;
+        public Dictionary<TrainStop, int> ConnectingCities;
 
         #endregion
 
@@ -20,7 +20,7 @@ namespace DealerOnJordanFinci
 
         public TrainStop(char name)
         {
-            this.Routes = new Dictionary<TrainStop, int>();
+            this.ConnectingCities = new Dictionary<TrainStop, int>();
             this.Name = name;
         }
 
@@ -34,7 +34,7 @@ namespace DealerOnJordanFinci
             output.Append("City ");
             output.Append(this.Name);
             output.Append(":\n");
-            output.Append(this.Routes.ToString());
+            output.Append(this.ConnectingCities.ToString());
             output.Append("\n");
             return output.ToString();
         }
