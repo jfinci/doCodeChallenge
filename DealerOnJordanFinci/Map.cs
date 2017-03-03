@@ -65,7 +65,7 @@ namespace DealerOnJordanFinci
             TrainStop sourceNode = this.AddTrainRoute(source);
             TrainStop destinationNode = this.AddTrainRoute(destination);
 
-            sourceNode.ConnectingCities.Add(destinationNode, distance);
+            sourceNode.AdjacentStops.Add(destinationNode, distance);
         }
 
 
@@ -206,9 +206,9 @@ namespace DealerOnJordanFinci
 
                 stops.Remove(currStop);
 
-                foreach (TrainStop neighbor in this.graph[currStop].ConnectingCities.Keys)
+                foreach (TrainStop neighbor in this.graph[currStop].AdjacentStops.Keys)
                 {
-                    int dist = distances[currStop] + this.graph[currStop].ConnectingCities[neighbor];
+                    int dist = distances[currStop] + this.graph[currStop].AdjacentStops[neighbor];
                     if (dist < distances[neighbor.Name] && distances[currStop] != int.MaxValue)
                     {
                         distances[neighbor.Name] = dist;
@@ -242,7 +242,7 @@ namespace DealerOnJordanFinci
                     throw new PathNotFound(route.First.Value);
                 
 
-                if (!startCity.ConnectingCities.TryGetValue(nextCity, out nextCityDistance))
+                if (!startCity.AdjacentStops.TryGetValue(nextCity, out nextCityDistance))
                     throw new PathNotFound(route.First.Value);
                 
                 route.RemoveFirst();
@@ -274,7 +274,7 @@ namespace DealerOnJordanFinci
         private int FindNumTripsWithDistanceLessThanN(int maxDistance, int currentDistance, int count, TrainStop currentCity, char endCity)
         {
             Dictionary<TrainStop, int> adjacentCities;
-            adjacentCities = currentCity.ConnectingCities;
+            adjacentCities = currentCity.AdjacentStops;
 
             foreach (TrainStop nextStop in adjacentCities.Keys)
             {
@@ -298,7 +298,7 @@ namespace DealerOnJordanFinci
         private int FindNumTripsWithExactlyNStops(int stops, int nStops, int count, TrainStop currentCity, char endCity)
         {
             Dictionary<TrainStop, int> adjacentCities;
-            adjacentCities = currentCity.ConnectingCities;
+            adjacentCities = currentCity.AdjacentStops;
 
             if (stops <= nStops)
             {
@@ -317,7 +317,7 @@ namespace DealerOnJordanFinci
         private int FindNumTripsWithMaxNStops(int stops, int maxStops, int count, TrainStop currentCity, char endCity)
         {
             Dictionary<TrainStop, int> adjacentCities;
-            adjacentCities = currentCity.ConnectingCities;
+            adjacentCities = currentCity.AdjacentStops;
 
             if (stops <= maxStops)
             {

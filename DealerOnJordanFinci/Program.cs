@@ -16,11 +16,11 @@ namespace DealerOnJordanFinci
         private const string directPathRegex = @"^([A-Z])*$";
         private const string graphRegex = @"^((?<start>[A-Z]{1})(?<end>[A-Z]{1})(?<distance>\d+)(,\s)*)*((?<start>[A-Z]{1})(?<end>[A-Z]{1})(?<distance>\d+))$";
         private const string help = @"
-            dp [PATH]                               -- Finds direct path.  EX: ABC will find the direct path throuh A, B then C.
-            maxstops [STOPS] [START] [END]          -- Finds the number of trips with less than or equal to [MAXSTOPS] stops
-            exactstops [STOPS] [START] [END]        -- Finds the number of trips with exactly [STOPS] stops.
-            shortest [START] [END]                  -- Finds the shortest path.
-            shorterthan [DISTANCE] [START] [END]    -- Finds the number of paths with a distance shorter than [DISTANCE].
+            dp [CITY1] [CITY2] [CITY3]....          -- Finds direct path.  EX: ABC will find the direct path throuh A, B then C.
+            maxstops [STOPS] [START] [END]          -- Finds the number of trips with less than or equal to [MAXSTOPS] stops. EX: maxstops 1 A B
+            exactstops [STOPS] [START] [END]        -- Finds the number of trips with exactly [STOPS] stops. EX: exactstops 1 A B
+            shortest [START] [END]                  -- Finds the shortest path. EX: shortest A B
+            shorterthan [DISTANCE] [START] [END]    -- Finds the number of paths with a distance shorter than [DISTANCE]. EX: shorterthan 30 A B
             help                                    -- Shows this help menu.
             q                                       -- exits the application.
         ";
