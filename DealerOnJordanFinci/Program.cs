@@ -66,7 +66,7 @@ namespace DealerOnJordanFinci
             Console.WriteLine(help);
             input = Console.ReadLine();
 
-            while (input != "Q")
+            while (input != "q")
             {
                 if (input == "help")
                 {

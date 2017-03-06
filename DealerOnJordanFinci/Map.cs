@@ -22,7 +22,7 @@ namespace DealerOnJordanFinci
         { }
 
         public PathNotFound(char start, char end)
-            : base(string.Format("Path between {0} and {1} does not exist."))
+            : base(string.Format("Path between {0} and {1} does not exist.", start, end))
         { }
     }
 
@@ -100,6 +100,10 @@ namespace DealerOnJordanFinci
                 throw new ArgumentException("Must contain ","route");
 
             routeCopy = new LinkedList<char>(route);
+
+            if (!this.HasStop(route.First.Value))
+                throw new PathNotFound();
+
             startCity = this.graph[route.First.Value];
             route.RemoveFirst();
 
@@ -199,7 +203,7 @@ namespace DealerOnJordanFinci
                 leastDistance = distances[currStop];
 
                 if (!ignoreIteration && currStop == stopB)
-                    this.FindShortestPathDistance(stopB, previous, distances);
+                    return this.FindShortestPathDistance(stopB, previous, distances);
 
                 stops.Remove(currStop);
 
@@ -237,7 +241,6 @@ namespace DealerOnJordanFinci
             {
                 if (!this.graph.TryGetValue(route.First.Value, out nextCity))
                     throw new PathNotFound(route.First.Value);
-                
 
                 if (!startCity.AdjacentStops.TryGetValue(nextCity, out nextCityDistance))
                     throw new PathNotFound(route.First.Value);
